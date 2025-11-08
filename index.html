@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>INTERNSHIP FINDER APP</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Internship Finder - Welcome</title>
+
+  <!-- ✨ Google Font: Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* -------- STAR BACKGROUND STYLING -------- */
     body {
-      min-height: 100vh; /* ✅ allow scrolling */
+      width: 100%;
+      height: 100vh;
       background-color: #000;
       background-image: radial-gradient(circle at top right, rgba(121, 68, 154, 0.15), transparent),
         radial-gradient(circle at 20% 80%, rgba(41, 196, 255, 0.15), transparent);
+      overflow: hidden;
       margin: 0;
       padding: 0;
       font-family: "Montserrat", sans-serif;
       color: white;
       letter-spacing: 0.5px;
-      overflow-x: hidden; /* ✅ prevent sideways scroll only */
     }
 
     canvas {
@@ -26,75 +30,50 @@
       height: 100%;
       top: 0;
       left: 0;
-      z-index: -1; /* ✅ stays behind content */
+      z-index: 0;
     }
 
-    /* -------- FORM CONTAINER -------- */
+    /* -------- INTRO PAGE CONTENT -------- */
     .container {
       position: relative;
       z-index: 1;
       text-align: center;
-      max-width: 700px;
-      margin: 80px auto;
-      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+      padding: 50px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 25px;
       backdrop-filter: blur(15px);
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      top: 50%;
+      transform: translateY(-50%);
       animation: fadeIn 1.2s ease-in;
     }
 
-    h1 {
-      font-size: 2rem;
+    .title {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      font-weight: 700;
       background: linear-gradient(135deg, #7b2ff7, #f107a3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
     }
 
-    h2 {
-      font-size: 1.3rem;
-      margin-top: 0;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    hr {
-      width: 60%;
-      margin: 20px auto;
-      border: 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    table {
-      margin: auto;
-    }
-
-    td {
-      padding: 10px;
-      text-align: left;
-    }
-
-    label {
-      font-weight: 600;
+    .tagline {
+      font-size: 1.1rem;
+      margin-bottom: 45px;
+      line-height: 1.7;
       color: rgba(255, 255, 255, 0.85);
+      font-weight: 500;
     }
 
-    input, select {
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      width: 250px;
-      font-size: 1rem;
-      outline: none;
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
     }
 
-    input:focus, select:focus {
-      box-shadow: 0 0 10px rgba(121, 68, 154, 0.8), 0 0 20px rgba(41, 196, 255, 0.4);
-      transform: scale(1.03);
-    }
-
-    /* -------- BUTTON STYLES -------- */
     .btn {
       text-decoration: none;
       color: white;
@@ -104,17 +83,14 @@
       letter-spacing: 0.8px;
       transition: all 0.3s ease;
       font-size: 1rem;
-      border: none;
-      cursor: pointer;
-      margin: 10px;
     }
 
     .btn.primary {
-      background: linear-gradient(135deg, #47068c, #13387c);
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
     }
 
     .btn.secondary {
-      background: linear-gradient(135deg, #1989a8, #114b97);
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
     }
 
     .btn:hover {
@@ -123,75 +99,42 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-40px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(-60px); }
+      to { opacity: 1; transform: translateY(-50%); }
     }
+
+    /* optional footer link style */
+    a.credit {
+      position: absolute;
+      bottom: 2vmin;
+      right: 2vmin;
+      color: rgba(255,255,255,0.2);
+      text-decoration: none;
+      z-index: 2;
+      font-size: 0.8rem;
+    }
+    a.credit:hover { color: #fff; }
   </style>
 </head>
 
 <body>
-  <canvas></canvas> <!-- ✅ Star animation background -->
+  <!-- Canvas for animated star background -->
+  <canvas></canvas>
 
+  <!-- Intro content -->
   <div class="container">
-    <h1>THE EASIEST WAY TO FIND YOUR PREFERRED INTERNSHIP</h1>
-    <h2>SIGN UP FOR THE BEST OPPORTUNITY!</h2>
-    <hr>
-
-    <form action="save_signup.php" method="POST">
-      <table>
-        <tr>
-          <td><label for="name">NAME</label></td>
-          <td><input type="text" id="name" name="name" placeholder="Enter your name" required></td>
-        </tr>
-        <tr>
-          <td><label for="age">AGE</label></td>
-          <td><input type="number" id="age" name="age" placeholder="Enter your age" required></td>
-        </tr>
-        <tr>
-          <td><label for="dob">DOB</label></td>
-          <td><input type="date" id="dob" name="dob" required></td>
-        </tr>
-        <tr>
-          <td><label for="email">GMAIL</label></td>
-          <td><input type="email" id="email" name="email" placeholder="Enter your mail" required></td>
-        </tr>
-        <tr>
-          <td><label for="gender">GENDER</label></td>
-          <td>
-            <select id="gender" name="gender" required>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td><label for="phone">PHONE NUMBER</label></td>
-          <td><input type="tel" id="phone" name="phone" placeholder="Enter your number" required></td>
-        </tr>
-        <tr>
-          <td><label for="field_of_study">FIELD OF STUDY</label></td>
-          <td><input type="text" id="field_of_study" name="field_of_study" placeholder="Enter your field of study" required></td>
-        </tr>
-        <tr>
-          <td><label for="college">COLLEGE NAME</label></td>
-          <td><input type="text" id="college" name="college" placeholder="Enter your college" required></td>
-        </tr>
-        <tr>
-          <td colspan="2" style="text-align:center;">
-            <a href="starrylogin.html" class="btn primary">Sign Up</a>
-
-             
-            <button type="reset" class="btn secondary">Reset</button>
-          </td>
-        </tr>
-      </table>
-    </form>
+    <h1 class="title">Welcome to Internship Finder</h1>
+    <p class="tagline">Your gateway to exciting internships and career opportunities 🌟</p>
+    <div class="buttons">
+      <a href="starrysignup.html" class="btn primary">Sign Up</a>
+      <a href="starrylogin.html" class="btn secondary">Login</a>
+    </div>
   </div>
+
+  <a class="credit" href="#">© Internship Finder</a>
   
 
   <script>
-    /* -------- STAR ANIMATION SCRIPT -------- */
     const STAR_COLOR = '#fff';
     const STAR_SIZE = 3;
     const STAR_MIN_SCALE = 0.2;
