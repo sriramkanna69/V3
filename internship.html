@@ -9,16 +9,20 @@
     /* ---------- STAR BACKGROUND ---------- */
     body {
       width: 100%;
-      height: 100vh;
+      min-height: 100vh;
       background-color: #000;
       background-image: radial-gradient(circle at top right, rgba(121, 68, 154, 0.13), transparent),
         radial-gradient(circle at 20% 80%, rgba(41, 196, 255, 0.13), transparent);
-      overflow: hidden;
+      overflow-x: hidden;
       margin: 0;
       padding: 0;
       font-family: "Montserrat", sans-serif;
       color: white;
       text-align: center;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     canvas {
@@ -34,9 +38,7 @@
     .content {
       position: relative;
       z-index: 1;
-      top: 50%;
-      transform: translateY(-50%);
-      padding: 20px;
+      padding: 40px 20px;
       animation: fadeIn 1.5s ease-in-out;
     }
 
@@ -64,6 +66,9 @@
       justify-content: center;
       gap: 50px;
       margin-top: 30px;
+      max-width: 1300px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .company {
@@ -77,12 +82,23 @@
       border-radius: 20px;
     }
 
-    /* Staggered animation for logos */
-    .company:nth-child(1) { animation-delay: 0.4s; }
-    .company:nth-child(2) { animation-delay: 0.6s; }
-    .company:nth-child(3) { animation-delay: 0.8s; }
-    .company:nth-child(4) { animation-delay: 1s; }
-    .company:nth-child(5) { animation-delay: 1.2s; }
+    /* ---------- STAGGERED ANIMATIONS (16 TOTAL) ---------- */
+    .company:nth-child(1)  { animation-delay: 0.4s; }
+    .company:nth-child(2)  { animation-delay: 0.6s; }
+    .company:nth-child(3)  { animation-delay: 0.8s; }
+    .company:nth-child(4)  { animation-delay: 1s; }
+    .company:nth-child(5)  { animation-delay: 1.2s; }
+    .company:nth-child(6)  { animation-delay: 1.4s; }
+    .company:nth-child(7)  { animation-delay: 1.6s; }
+    .company:nth-child(8)  { animation-delay: 1.8s; }
+    .company:nth-child(9)  { animation-delay: 2s; }
+    .company:nth-child(10) { animation-delay: 2.2s; }
+    .company:nth-child(11) { animation-delay: 2.4s; }
+    .company:nth-child(12) { animation-delay: 2.6s; }
+    .company:nth-child(13) { animation-delay: 2.8s; }
+    .company:nth-child(14) { animation-delay: 3s; }
+    .company:nth-child(15) { animation-delay: 3.2s; }
+    .company:nth-child(16) { animation-delay: 3.4s; }
 
     .company img {
       height: 80px;
@@ -139,24 +155,15 @@
 
     /* ---------- RESPONSIVE DESIGN ---------- */
     @media (max-width: 768px) {
-      h1 {
-        font-size: 2.1em;
-      }
-      h2 {
-        font-size: 1em;
-      }
-      .logo-grid {
-        gap: 30px;
-      }
+      h1 { font-size: 2.1em; }
+      h2 { font-size: 1em; }
+      .logo-grid { gap: 30px; }
       .company img {
         height: 65px;
         padding: 10px 15px;
       }
-      .company p {
-        font-size: 0.9em;
-      }
+      .company p { font-size: 0.9em; }
     }
-
   </style>
 </head>
 
@@ -165,47 +172,29 @@
 
   <div class="content">
     <h1>Find Your Dream Internship ✨</h1>
-    <h2>Explore top companies offering student opportunities</h2>
+    <h2>Explore Top Companies Offering Student Opportunities</h2>
 
     <div class="logo-grid">
-      <div class="company">
-        <a href="https://careers.google.com/students/" target="_blank">
-          <img src="images/google.png" alt="Google Internship">
-        </a>
-        <p>Google</p>
-      </div>
-
-      <div class="company">
-        <a href="https://careers.microsoft.com/students/us/en" target="_blank">
-          <img src="images/microsoft.png" alt="Microsoft Internship">
-        </a>
-        <p>Microsoft</p>
-      </div>
-
-      <div class="company">
-        <a href="https://www.zoho.com/careers/" target="_blank">
-          <img src="images/zoho.png" alt="Zoho Internship">
-        </a>
-        <p>Zoho</p>
-      </div>
-
-      <div class="company">
-        <a href="https://careers.apple.com/en-us/students" target="_blank">
-          <img src="images/apple.png" alt="Apple Internship">
-        </a>
-        <p>Apple</p>
-      </div>
-
-      <div class="company">
-        <a href="https://www.amazon.jobs/en/business_categories/student-programs" target="_blank">
-          <img src="images/amazon.png" alt="Amazon Internship">
-        </a>
-        <p>Amazon</p>
-      </div>
+      <div class="company"><a href="https://careers.google.com/students/" target="_blank"><img src="images/google.png" alt="Google Internship"></a><p>Google</p></div>
+      <div class="company"><a href="https://careers.microsoft.com/students/us/en" target="_blank"><img src="images/microsoft.png" alt="Microsoft Internship"></a><p>Microsoft</p></div>
+      <div class="company"><a href="https://www.zoho.com/careers/" target="_blank"><img src="images/zoho.png" alt="Zoho Internship"></a><p>Zoho</p></div>
+      <div class="company"><a href="https://careers.apple.com/en-us/students" target="_blank"><img src="images/apple.png" alt="Apple Internship"></a><p>Apple</p></div>
+      <div class="company"><a href="https://www.amazon.jobs/en/business_categories/student-programs" target="_blank"><img src="images/amazon.png" alt="Amazon Internship"></a><p>Amazon</p></div>
+      <div class="company"><a href="https://www.ibm.com/in-en/careers/internships" target="_blank"><img src="images/ibm.png" alt="IBM Internship"></a><p>IBM</p></div>
+      <div class="company"><a href="https://www.tesla.com/careers/internships" target="_blank"><img src="images/tesla.png" alt="Tesla Internship"></a><p>Tesla</p></div>
+      <div class="company"><a href="https://www.intel.com/content/www/us/en/jobs/locations/india/students.html" target="_blank"><img src="images/intel.png" alt="Intel Internship"></a><p>Intel</p></div>
+      <div class="company"><a href="https://careers.adobe.com/us/en/Interns" target="_blank"><img src="images/adobe.png" alt="Adobe Internship"></a><p>Adobe</p></div>
+      <div class="company"><a href="https://www.nvidia.com/en-us/about-nvidia/careers/university-recruiting/" target="_blank"><img src="images/nvidia.png" alt="NVIDIA Internship"></a><p>NVIDIA</p></div>
+      <div class="company"><a href="https://www.metacareers.com/careerprograms/students" target="_blank"><img src="images/meta.png" alt="Meta Internship"></a><p>Meta</p></div>
+      <div class="company"><a href="https://www.oracle.com/in/careers/students-grads/" target="_blank"><img src="images/oracle.png" alt="Oracle Internship"></a><p>Oracle</p></div>
+      <div class="company"><a href="https://jobs.dell.com/internships" target="_blank"><img src="images/dell.png" alt="Dell Internship"></a><p>Dell</p></div>
+      <div class="company"><a href="https://www.infosys.com/careers/internships.html" target="_blank"><img src="images/infosys.png" alt="Infosys Internship"></a><p>Infosys</p></div>
+      <div class="company"><a href="https://www.tcs.com/careers/india/internship" target="_blank"><img src="images/tcs.png" alt="TCS Internship"></a><p>TCS</p></div>
+      <div class="company"><a href="https://careers.wipro.com/content/Early-Careers/?locale=en_US" target="_blank"><img src="images/wipro.png" alt="Wipro Internship"></a><p>Wipro</p></div>
     </div>
 
     <footer>
-      <p>© 2025 Internship Finder | Powered by Mentorship Program</p>
+      <p>© 2025 Internship Finder | Powered by Codesapiens Mentorship Program</p>
     </footer>
   </div>
 
@@ -216,7 +205,6 @@
     let stars = [];
     const numStars = 150;
 
-    // Resize canvas to full screen
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -224,7 +212,6 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Create stars
     function createStars() {
       stars = [];
       for (let i = 0; i < numStars; i++) {
@@ -238,7 +225,6 @@
       }
     }
 
-    // Draw stars with twinkling animation
     function drawStars() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       stars.forEach(star => {
@@ -247,18 +233,15 @@
         ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
         ctx.fill();
 
-        // Twinkle
         star.alpha += star.delta;
         if (star.alpha <= 0 || star.alpha >= 1) star.delta = -star.delta;
 
-        // Gentle drift
         star.y += 0.05;
         if (star.y > canvas.height) star.y = 0;
       });
       requestAnimationFrame(drawStars);
     }
 
-    // Initialize stars
     createStars();
     drawStars();
   </script>
