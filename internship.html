@@ -20,6 +20,7 @@
       font-family: "Montserrat", sans-serif;
       color: white;
       text-align: center;
+      position: relative;
     }
 
     html {
@@ -35,29 +36,35 @@
       z-index: 0;
     }
 
-    /* ---------- PAGE CONTENT ---------- */
+    /* ---------- GLASS CONTAINER ---------- */
     .content {
       position: relative;
       z-index: 1;
-      padding: 40px 20px;
-      animation: fadeIn 1.5s ease-in-out;
+      max-width: 1200px;
+      margin: 100px auto;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 25px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      padding: 60px 40px;
+      animation: fadeIn 1.2s ease-in;
     }
 
     h1 {
-      font-size: 2.8em;
-      margin-bottom: 15px;
-      color: #fff;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-      animation: slideDown 1.2s ease-in-out;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #7b2ff7, #f107a3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     h2 {
-      font-size: 1.2em;
+      font-size: 1.2rem;
       font-weight: 400;
-      color: #ccc;
+      color: rgba(255, 255, 255, 0.8);
       margin-bottom: 50px;
       letter-spacing: 0.5px;
-      animation: fadeIn 1.5s ease-in;
     }
 
     /* ---------- LOGO GRID ---------- */
@@ -65,41 +72,23 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 50px;
+      gap: 40px;
       margin-top: 30px;
-      max-width: 1300px;
-      margin-left: auto;
-      margin-right: auto;
     }
 
     .company {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: fadeUp 1.2s ease forwards;
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 20px;
+      padding: 20px 25px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeUp 1.2s ease forwards, pulseGlow 3s ease-in-out infinite;
+      opacity: 0;
     }
 
-    /* ---------- STAGGERED ANIMATIONS (16 TOTAL) ---------- */
-    .company:nth-child(1)  { animation-delay: 0.4s; }
-    .company:nth-child(2)  { animation-delay: 0.6s; }
-    .company:nth-child(3)  { animation-delay: 0.8s; }
-    .company:nth-child(4)  { animation-delay: 1s; }
-    .company:nth-child(5)  { animation-delay: 1.2s; }
-    .company:nth-child(6)  { animation-delay: 1.4s; }
-    .company:nth-child(7)  { animation-delay: 1.6s; }
-    .company:nth-child(8)  { animation-delay: 1.8s; }
-    .company:nth-child(9)  { animation-delay: 2s; }
-    .company:nth-child(10) { animation-delay: 2.2s; }
-    .company:nth-child(11) { animation-delay: 2.4s; }
-    .company:nth-child(12) { animation-delay: 2.6s; }
-    .company:nth-child(13) { animation-delay: 2.8s; }
-    .company:nth-child(14) { animation-delay: 3s; }
-    .company:nth-child(15) { animation-delay: 3.2s; }
-    .company:nth-child(16) { animation-delay: 3.4s; }
+    .company:hover {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+    }
 
     .company img {
       height: 80px;
@@ -108,35 +97,41 @@
       border-radius: 12px;
       background-color: rgba(20, 20, 20, 0.8);
       padding: 15px 20px;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
       object-fit: contain;
-      animation: glowPulse 3s ease-in-out infinite alternate;
-    }
-
-    .company:hover {
-      transform: scale(1.15);
-      box-shadow: 0 0 35px rgba(255, 255, 255, 0.6);
+      display: block;
+      margin: 0 auto 10px;
     }
 
     .company p {
-      margin-top: 12px;
       font-size: 1em;
-      color: #ddd;
-      letter-spacing: 0.5px;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 0;
     }
 
     /* ---------- FOOTER ---------- */
     footer {
-      margin-top: 70px;
-      color: #aaa;
-      font-size: 0.9em;
-      animation: fadeIn 2s ease-in;
+      text-align: center;
+      padding: 25px 0;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.95rem;
+      margin-top: 50px;
+      z-index: 1;
+      position: relative;
     }
 
-    /* ---------- KEYFRAMES ---------- */
+    footer a {
+      color: #77b5fe;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- ANIMATIONS ---------- */
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes fadeUp {
@@ -144,26 +139,22 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes glowPulse {
-      0% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); }
-      100% { box-shadow: 0 0 35px rgba(255, 255, 255, 0.6); }
-    }
-
-    /* ---------- RESPONSIVE DESIGN ---------- */
-    @media (max-width: 768px) {
-      h1 { font-size: 2.1em; }
-      h2 { font-size: 1em; }
-      .logo-grid { gap: 30px; }
-      .company img {
-        height: 65px;
-        padding: 10px 15px;
+    /* ✨ Soft Pulsing Glow Animation ✨ */
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
       }
-      .company p { font-size: 0.9em; }
+      50% {
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+      }
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 768px) {
+      .content { margin: 60px 20px; padding: 40px 25px; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1rem; }
+      .company img { height: 65px; padding: 10px 15px; }
     }
   </style>
 </head>
@@ -195,161 +186,147 @@
     </div>
 
     <footer>
-      <p>© 2025 Internship Finder | Powered by Codesapiens Mentorship Program</p>
+      © 2025 Internship Finder | Built under the <a href="#">CodeSapiens Mentorship Program</a>
     </footer>
   </div>
 
+  <!-- ---------- STAR BACKGROUND SCRIPT ---------- -->
   <script>
-  const STAR_COLOR = '#fff';
-  const STAR_SIZE = 3;
-  const STAR_MIN_SCALE = 0.2;
-  const OVERFLOW_THRESHOLD = 50;
-  const STAR_COUNT = (window.innerWidth + window.innerHeight) / 8;
+    const STAR_COLOR = '#fff';
+    const STAR_SIZE = 3;
+    const STAR_MIN_SCALE = 0.2;
+    const OVERFLOW_THRESHOLD = 50;
+    const STAR_COUNT = (window.innerWidth + window.innerHeight) / 8;
 
-  const canvas = document.querySelector('canvas'),
-        context = canvas.getContext('2d');
+    const canvas = document.querySelector('canvas'),
+          context = canvas.getContext('2d');
 
-  let scale = 1, width, height;
-  let stars = [];
-  let pointerX, pointerY;
-  let velocity = { x: 0, y: 0, tx: 0, ty: 0, z: 0.0005 };
-  let touchInput = false;
+    let scale = 1, width, height;
+    let stars = [];
+    let pointerX, pointerY;
+    let velocity = { x: 0, y: 0, tx: 0, ty: 0, z: 0.0005 };
+    let touchInput = false;
 
-  generate();
-  resize();
-  step();
+    generate();
+    resize();
+    step();
 
-  window.onresize = resize;
-  canvas.onmousemove = onMouseMove;
-  canvas.ontouchmove = onTouchMove;
-  canvas.ontouchend = onMouseLeave;
-  document.onmouseleave = onMouseLeave;
+    window.onresize = resize;
+    canvas.onmousemove = onMouseMove;
+    canvas.ontouchmove = onTouchMove;
+    canvas.ontouchend = onMouseLeave;
+    document.onmouseleave = onMouseLeave;
 
-  function generate() {
-    for (let i = 0; i < STAR_COUNT; i++) {
-      stars.push({
-        x: 0, y: 0,
-        z: STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE)
-      });
-    }
-  }
-
-  function placeStar(star) {
-    star.x = Math.random() * width;
-    star.y = Math.random() * height;
-  }
-
-  function recycleStar(star) {
-    let direction = 'z';
-    let vx = Math.abs(velocity.x), vy = Math.abs(velocity.y);
-    if (vx > 1 || vy > 1) {
-      let axis = vx > vy
-        ? (Math.random() < vx / (vx + vy) ? 'h' : 'v')
-        : (Math.random() < vy / (vx + vy) ? 'v' : 'h');
-      if (axis === 'h') direction = velocity.x > 0 ? 'r' : 'l';
-      else direction = velocity.y > 0 ? 'b' : 't';
+    function generate() {
+      for (let i = 0; i < STAR_COUNT; i++) {
+        stars.push({ x: 0, y: 0, z: STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE) });
+      }
     }
 
-    star.z = STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE);
-    if (direction === 'z') {
-      star.z = 0.1;
+    function placeStar(star) {
       star.x = Math.random() * width;
       star.y = Math.random() * height;
-    } else if (direction === 'l') {
-      star.x = -OVERFLOW_THRESHOLD; star.y = height * Math.random();
-    } else if (direction === 'r') {
-      star.x = width + OVERFLOW_THRESHOLD; star.y = height * Math.random();
-    } else if (direction === 't') {
-      star.x = width * Math.random(); star.y = -OVERFLOW_THRESHOLD;
-    } else if (direction === 'b') {
-      star.x = width * Math.random(); star.y = height + OVERFLOW_THRESHOLD;
     }
-  }
 
-  function resize() {
-    scale = window.devicePixelRatio || 1;
-    width = window.innerWidth * scale;
-    height = window.innerHeight * scale;
-    canvas.width = width;
-    canvas.height = height;
-    stars.forEach(placeStar);
-  }
+    function recycleStar(star) {
+      let direction = 'z';
+      let vx = Math.abs(velocity.x), vy = Math.abs(velocity.y);
+      if (vx > 1 || vy > 1) {
+        let axis = vx > vy ? (Math.random() < vx / (vx + vy) ? 'h' : 'v') : (Math.random() < vy / (vx + vy) ? 'v' : 'h');
+        if (axis === 'h') direction = velocity.x > 0 ? 'l' : 'r';
+        else direction = velocity.y > 0 ? 't' : 'b';
+      }
 
-  function step() {
-    context.clearRect(0, 0, width, height);
-    update();
-    render();
-    requestAnimationFrame(step);
-  }
-
-  function update() {
-    velocity.tx *= 0.96;
-    velocity.ty *= 0.96;
-    velocity.x += (velocity.tx - velocity.x) * 0.8;
-    velocity.y += (velocity.ty - velocity.y) * 0.8;
-
-    stars.forEach((star) => {
-      star.x += velocity.x * star.z;
-      star.y += velocity.y * star.z;
-      star.x += (star.x - width / 2) * velocity.z * star.z;
-      star.y += (star.y - height / 2) * velocity.z * star.z;
-      star.z += velocity.z;
-
-      if (
-        star.x < -OVERFLOW_THRESHOLD || star.x > width + OVERFLOW_THRESHOLD ||
-        star.y < -OVERFLOW_THRESHOLD || star.y > height + OVERFLOW_THRESHOLD
-      ) recycleStar(star);
-    });
-  }
-
-  function render() {
-    stars.forEach((star) => {
-      context.beginPath();
-      context.lineCap = 'round';
-      context.lineWidth = STAR_SIZE * star.z * scale;
-      context.globalAlpha = 0.5 + 0.5 * Math.random();
-      context.strokeStyle = STAR_COLOR;
-      context.moveTo(star.x, star.y);
-
-      let tailX = -velocity.x * 2;
-      let tailY = -velocity.y * 2;
-      if (Math.abs(tailX) < 0.1) tailX = 0.5;
-      if (Math.abs(tailY) < 0.1) tailY = 0.5;
-
-      context.lineTo(star.x + tailX, star.y + tailY);
-      context.stroke();
-    });
-  }
-
-  // Move stars IN THE SAME DIRECTION as cursor
-  function movePointer(x, y) {
-    if (typeof pointerX === 'number' && typeof pointerY === 'number') {
-      let ox = x - pointerX;
-      let oy = y - pointerY;
-      velocity.tx += (ox / 2 * scale);
-      velocity.ty += (oy / 2 * scale);
+      star.z = STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE);
+      if (direction === 'z') {
+        star.z = 0.1;
+        star.x = Math.random() * width;
+        star.y = Math.random() * height;
+      } else if (direction === 'l') {
+        star.x = -OVERFLOW_THRESHOLD; star.y = height * Math.random();
+      } else if (direction === 'r') {
+        star.x = width + OVERFLOW_THRESHOLD; star.y = height * Math.random();
+      } else if (direction === 't') {
+        star.x = width * Math.random(); star.y = -OVERFLOW_THRESHOLD;
+      } else if (direction === 'b') {
+        star.x = width * Math.random(); star.y = height + OVERFLOW_THRESHOLD;
+      }
     }
-    pointerX = x;
-    pointerY = y;
-  }
 
-  function onMouseMove(event) {
-    touchInput = false;
-    movePointer(event.clientX, event.clientY);
-  }
+    function resize() {
+      scale = window.devicePixelRatio || 1;
+      width = window.innerWidth * scale;
+      height = window.innerHeight * scale;
+      canvas.width = width;
+      canvas.height = height;
+      stars.forEach(placeStar);
+    }
 
-  function onTouchMove(event) {
-    touchInput = true;
-    movePointer(event.touches[0].clientX, event.touches[0].clientY, true);
-    event.preventDefault();
-  }
+    function step() {
+      context.clearRect(0, 0, width, height);
+      update(); render();
+      requestAnimationFrame(step);
+    }
 
-  function onMouseLeave() {
-    pointerX = null;
-    pointerY = null;
-  }
-</script>
+    function update() {
+      velocity.tx *= 0.96; velocity.ty *= 0.96;
+      velocity.x += (velocity.tx - velocity.x) * 0.8;
+      velocity.y += (velocity.ty - velocity.y) * 0.8;
 
+      stars.forEach((star) => {
+        star.x += velocity.x * star.z;
+        star.y += velocity.y * star.z;
+        star.x += (star.x - width / 2) * velocity.z * star.z;
+        star.y += (star.y - height / 2) * velocity.z * star.z;
+        star.z += velocity.z;
+
+        if (star.x < -OVERFLOW_THRESHOLD || star.x > width + OVERFLOW_THRESHOLD ||
+            star.y < -OVERFLOW_THRESHOLD || star.y > height + OVERFLOW_THRESHOLD) {
+          recycleStar(star);
+        }
+      });
+    }
+
+    function render() {
+      stars.forEach((star) => {
+        context.beginPath();
+        context.lineCap = 'round';
+        context.lineWidth = STAR_SIZE * star.z * scale;
+        context.globalAlpha = 0.5 + 0.5 * Math.random();
+        context.strokeStyle = STAR_COLOR;
+        context.moveTo(star.x, star.y);
+        let tailX = velocity.x * 2, tailY = velocity.y * 2;
+        if (Math.abs(tailX) < 0.1) tailX = 0.5;
+        if (Math.abs(tailY) < 0.1) tailY = 0.5;
+        context.lineTo(star.x + tailX, star.y + tailY);
+        context.stroke();
+      });
+    }
+
+    function movePointer(x, y) {
+      if (typeof pointerX === 'number' && typeof pointerY === 'number') {
+        let ox = x - pointerX, oy = y - pointerY;
+        velocity.tx -= (ox / 2 * scale);
+        velocity.ty -= (oy / 2 * scale);
+      }
+      pointerX = x; pointerY = y;
+    }
+
+    function onMouseMove(event) {
+      touchInput = false;
+      movePointer(event.clientX, event.clientY);
+    }
+
+    function onTouchMove(event) {
+      touchInput = true;
+      movePointer(event.touches[0].clientX, event.touches[0].clientY, true);
+      event.preventDefault();
+    }
+
+    function onMouseLeave() {
+      pointerX = null; pointerY = null;
+    }
+  </script>
 </body>
 </html>
 
