@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Internship Finder</title>
+
   <style>
     /* ---------- STAR BACKGROUND ---------- */
     body {
@@ -40,11 +41,20 @@
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 40px;
+      font-size: 2.8em;
+      margin-bottom: 15px;
       color: #fff;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
       animation: slideDown 1.2s ease-in-out;
+    }
+
+    h2 {
+      font-size: 1.2em;
+      font-weight: 400;
+      color: #ccc;
+      margin-bottom: 50px;
+      letter-spacing: 0.5px;
+      animation: fadeIn 1.5s ease-in;
     }
 
     /* ---------- LOGO GRID ---------- */
@@ -52,42 +62,55 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 40px;
-      margin-top: 40px;
+      gap: 50px;
+      margin-top: 30px;
     }
 
-    .logo-grid a {
-      display: block;
-      transition: transform 0.3s, box-shadow 0.3s;
+    .company {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
       opacity: 0;
       transform: translateY(40px);
       animation: fadeUp 1.2s ease forwards;
+      border-radius: 20px;
     }
 
     /* Staggered animation for logos */
-    .logo-grid a:nth-child(1) { animation-delay: 0.4s; }
-    .logo-grid a:nth-child(2) { animation-delay: 0.6s; }
-    .logo-grid a:nth-child(3) { animation-delay: 0.8s; }
-    .logo-grid a:nth-child(4) { animation-delay: 1s; }
-    .logo-grid a:nth-child(5) { animation-delay: 1.2s; }
+    .company:nth-child(1) { animation-delay: 0.4s; }
+    .company:nth-child(2) { animation-delay: 0.6s; }
+    .company:nth-child(3) { animation-delay: 0.8s; }
+    .company:nth-child(4) { animation-delay: 1s; }
+    .company:nth-child(5) { animation-delay: 1.2s; }
 
-    .logo-grid img {
-      width: 150px;
-      height: auto;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-      background-color: #111;
-      padding: 10px;
+    .company img {
+      height: 80px;
+      width: auto;
+      max-width: 200px;
+      border-radius: 12px;
+      background-color: rgba(20, 20, 20, 0.8);
+      padding: 15px 20px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+      object-fit: contain;
+      animation: glowPulse 3s ease-in-out infinite alternate;
     }
 
-    .logo-grid a:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+    .company:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 35px rgba(255, 255, 255, 0.6);
+    }
+
+    .company p {
+      margin-top: 12px;
+      font-size: 1em;
+      color: #ddd;
+      letter-spacing: 0.5px;
     }
 
     /* ---------- FOOTER ---------- */
     footer {
-      margin-top: 60px;
+      margin-top: 70px;
       color: #aaa;
       font-size: 0.9em;
       animation: fadeIn 2s ease-in;
@@ -108,29 +131,77 @@
       from { opacity: 0; transform: translateY(-30px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); }
+      100% { box-shadow: 0 0 35px rgba(255, 255, 255, 0.6); }
+    }
+
+    /* ---------- RESPONSIVE DESIGN ---------- */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.1em;
+      }
+      h2 {
+        font-size: 1em;
+      }
+      .logo-grid {
+        gap: 30px;
+      }
+      .company img {
+        height: 65px;
+        padding: 10px 15px;
+      }
+      .company p {
+        font-size: 0.9em;
+      }
+    }
+
   </style>
 </head>
+
 <body>
   <canvas id="stars"></canvas>
 
   <div class="content">
     <h1>Find Your Dream Internship ✨</h1>
+    <h2>Explore top companies offering student opportunities</h2>
+
     <div class="logo-grid">
-      <a href="https://careers.google.com/students/" target="_blank">
-        <img src="images/google.png" alt="Google Internship">
-      </a>
-      <a href="https://careers.microsoft.com/students/us/en" target="_blank">
-        <img src="images/microsoft.png" alt="Microsoft Internship">
-      </a>
-      <a href="https://careers.zoho.com/internships" target="_blank">
-        <img src="images/zoho.png" alt="Zoho Internship">
-      </a>
-      <a href="https://careers.apple.com/en-us/students" target="_blank">
-        <img src="images/apple.png" alt="Apple Internship">
-      </a>
-      <a href="https://www.amazon.jobs/en/business_categories/student-programs" target="_blank">
-        <img src="images/amazon.png" alt="Amazon Internship">
-      </a>
+      <div class="company">
+        <a href="https://careers.google.com/students/" target="_blank">
+          <img src="images/google.png" alt="Google Internship">
+        </a>
+        <p>Google</p>
+      </div>
+
+      <div class="company">
+        <a href="https://careers.microsoft.com/students/us/en" target="_blank">
+          <img src="images/microsoft.png" alt="Microsoft Internship">
+        </a>
+        <p>Microsoft</p>
+      </div>
+
+      <div class="company">
+        <a href="https://www.zoho.com/careers/" target="_blank">
+          <img src="images/zoho.png" alt="Zoho Internship">
+        </a>
+        <p>Zoho</p>
+      </div>
+
+      <div class="company">
+        <a href="https://careers.apple.com/en-us/students" target="_blank">
+          <img src="images/apple.png" alt="Apple Internship">
+        </a>
+        <p>Apple</p>
+      </div>
+
+      <div class="company">
+        <a href="https://www.amazon.jobs/en/business_categories/student-programs" target="_blank">
+          <img src="images/amazon.png" alt="Amazon Internship">
+        </a>
+        <p>Amazon</p>
+      </div>
     </div>
 
     <footer>
@@ -193,3 +264,4 @@
   </script>
 </body>
 </html>
+
