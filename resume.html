@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Builder | Internship Finder</title>
+
+  <!-- ✨ Google Font: Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* -------- STAR BACKGROUND -------- */
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background-color: #000;
+      background-image: radial-gradient(circle at top right, rgba(121, 68, 154, 0.13), transparent),
+                        radial-gradient(circle at 20% 80%, rgba(41, 196, 255, 0.13), transparent);
+      font-family: "Montserrat", sans-serif;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    canvas {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    /* -------- MAIN CONTAINER -------- */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 650px;
+      margin: 60px auto 100px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 25px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+      animation: fadeIn 1.2s ease-in;
+    }
+
+    .title {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      text-align: center;
+      background: linear-gradient(135deg, #7b2ff7, #f107a3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tagline {
+      text-align: center;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 15px;
+      margin-bottom: 6px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 15px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 0.95rem;
+      outline: none;
+      resize: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      color: white;
+      padding: 14px 35px;
+      border-radius: 35px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      text-align: center;
+      cursor: pointer;
+      margin-top: 25px;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      border: none;
+      width: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .output {
+      margin-top: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 25px;
+      display: none;
+      animation: fadeIn 0.8s ease-in;
+    }
+
+    .output h2 {
+      color: #7b2ff7;
+    }
+
+    .back-btn {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      color: #fff;
+      text-shadow: 0 0 10px #7b2ff7;
+    }
+
+    footer {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.85rem;
+      margin-top: 50px;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    footer span {
+      color: #a770ef;
+      font-weight: 600;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="stars"></canvas>
+
+  <div class="container">
+    <h1 class="title">Resume Builder</h1>
+    <p class="tagline">Create a simple professional resume instantly ✨</p>
+
+    <form id="resumeForm">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="example@email.com" required>
+
+      <label for="phone">Phone Number</label>
+      <input type="text" id="phone" placeholder="+91 9876543210" required>
+
+      <label for="skills">Skills</label>
+      <textarea id="skills" rows="3" placeholder="HTML, CSS, JavaScript, etc."></textarea>
+
+      <label for="experience">Experience</label>
+      <textarea id="experience" rows="3" placeholder="Internships, projects, etc."></textarea>
+
+      <label for="education">Education</label>
+      <textarea id="education" rows="3" placeholder="College, Degree, Year"></textarea>
+
+      <button type="submit" class="btn">Generate Resume</button>
+    </form>
+
+    <div class="output" id="resumeOutput"></div>
+
+    <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+  </div>
+
+  <footer>
+    © 2025 <span>Internship Finder</span> | Powered by <span>Codesapiens Mentorship Program</span>
+  </footer>
+
+  <!-- 🌠 STAR ANIMATION SCRIPT -->
+  <script>
+    const STAR_COLOR = '#fff';
+    const STAR_SIZE = 3;
+    const STAR_MIN_SCALE = 0.2;
+    const OVERFLOW_THRESHOLD = 50;
+    const STAR_COUNT = (window.innerWidth + window.innerHeight) / 8;
+
+    const canvas = document.querySelector('#stars'),
+          context = canvas.getContext('2d');
+
+    let scale = 1, width, height;
+    let stars = [];
+    let pointerX, pointerY;
+    let velocity = { x: 0, y: 0, tx: 0, ty: 0, z: 0.0005 };
+    let touchInput = false;
+
+    generate();
+    resize();
+    step();
+
+    window.onresize = resize;
+    canvas.onmousemove = onMouseMove;
+    canvas.ontouchmove = onTouchMove;
+    canvas.ontouchend = onMouseLeave;
+    document.onmouseleave = onMouseLeave;
+
+    function generate() {
+      for (let i = 0; i < STAR_COUNT; i++) {
+        stars.push({
+          x: 0,
+          y: 0,
+          z: STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE)
+        });
+      }
+    }
+
+    function placeStar(star) {
+      star.x = Math.random() * width;
+      star.y = Math.random() * height;
+    }
+
+    function recycleStar(star) {
+      let direction = 'z';
+      let vx = Math.abs(velocity.x), vy = Math.abs(velocity.y);
+      if (vx > 1 || vy > 1) {
+        let axis = vx > vy
+          ? (Math.random() < vx / (vx + vy) ? 'h' : 'v')
+          : (Math.random() < vy / (vx + vy) ? 'v' : 'h');
+        if (axis === 'h') direction = velocity.x > 0 ? 'l' : 'r';
+        else direction = velocity.y > 0 ? 't' : 'b';
+      }
+      star.z = STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE);
+      if (direction === 'z') {
+        star.z = 0.1;
+        star.x = Math.random() * width;
+        star.y = Math.random() * height;
+      } else if (direction === 'l') {
+        star.x = -OVERFLOW_THRESHOLD;
+        star.y = height * Math.random();
+      } else if (direction === 'r') {
+        star.x = width + OVERFLOW_THRESHOLD;
+        star.y = height * Math.random();
+      } else if (direction === 't') {
+        star.x = width * Math.random();
+        star.y = -OVERFLOW_THRESHOLD;
+      } else if (direction === 'b') {
+        star.x = width * Math.random();
+        star.y = height + OVERFLOW_THRESHOLD;
+      }
+    }
+
+    function resize() {
+      scale = window.devicePixelRatio || 1;
+      width = window.innerWidth * scale;
+      height = window.innerHeight * scale;
+      canvas.width = width;
+      canvas.height = height;
+      stars.forEach(placeStar);
+    }
+
+    function step() {
+      context.clearRect(0, 0, width, height);
+      update();
+      render();
+      requestAnimationFrame(step);
+    }
+
+    function update() {
+      velocity.tx *= 0.96;
+      velocity.ty *= 0.96;
+      velocity.x += (velocity.tx - velocity.x) * 0.8;
+      velocity.y += (velocity.ty - velocity.y) * 0.8;
+      stars.forEach(star => {
+        star.x += velocity.x * star.z;
+        star.y += velocity.y * star.z;
+        star.x += (star.x - width / 2) * velocity.z * star.z;
+        star.y += (star.y - height / 2) * velocity.z * star.z;
+        star.z += velocity.z;
+        if (
+          star.x < -OVERFLOW_THRESHOLD ||
+          star.x > width + OVERFLOW_THRESHOLD ||
+          star.y < -OVERFLOW_THRESHOLD ||
+          star.y > height + OVERFLOW_THRESHOLD
+        ) recycleStar(star);
+      });
+    }
+
+    function render() {
+      stars.forEach(star => {
+        context.beginPath();
+        context.lineCap = 'round';
+        context.lineWidth = STAR_SIZE * star.z * scale;
+        context.globalAlpha = 0.5 + 0.5 * Math.random();
+        context.strokeStyle = STAR_COLOR;
+        context.moveTo(star.x, star.y);
+        let tailX = velocity.x * 2, tailY = velocity.y * 2;
+        if (Math.abs(tailX) < 0.1) tailX = 0.5;
+        if (Math.abs(tailY) < 0.1) tailY = 0.5;
+        context.lineTo(star.x + tailX, star.y + tailY);
+        context.stroke();
+      });
+    }
+
+    function movePointer(x, y) {
+      if (typeof pointerX === 'number' && typeof pointerY === 'number') {
+        let ox = x - pointerX, oy = y - pointerY;
+        velocity.tx += (ox / 8 * scale) * (touchInput ? 1 : -1);
+        velocity.ty += (oy / 8 * scale) * (touchInput ? 1 : -1);
+      }
+      pointerX = x;
+      pointerY = y;
+    }
+
+    function onMouseMove(e) {
+      touchInput = false;
+      movePointer(e.clientX, e.clientY);
+    }
+
+    function onTouchMove(e) {
+      touchInput = true;
+      movePointer(e.touches[0].clientX, e.touches[0].clientY, true);
+      e.preventDefault();
+    }
+
+    function onMouseLeave() {
+      pointerX = null;
+      pointerY = null;
+    }
+
+    // -------- RESUME BUILDER --------
+    document.getElementById("resumeForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const skills = document.getElementById("skills").value;
+      const experience = document.getElementById("experience").value;
+      const education = document.getElementById("education").value;
+
+      const outputHTML = `
+        <h2>${name}</h2>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <h3>Skills</h3><p>${skills}</p>
+        <h3>Experience</h3><p>${experience}</p>
+        <h3>Education</h3><p>${education}</p>
+      `;
+
+      const outputDiv = document.getElementById("resumeOutput");
+      outputDiv.innerHTML = outputHTML;
+      outputDiv.style.display = "block";
+    });
+  </script>
+</body>
+</html>

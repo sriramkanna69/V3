@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
-    /* ---------- STAR BACKGROUND (same as Thank You page) ---------- */
+    /* ---------- STAR BACKGROUND ---------- */
     body {
       width: 100%;
       height: 100vh;
@@ -63,6 +63,25 @@
       color: rgba(255, 255, 255, 0.85);
       line-height: 1.8;
       margin-bottom: 30px;
+    }
+
+    /* ---------- BUTTON ---------- */
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 25px;
+      padding: 12px 25px;
+      background: linear-gradient(135deg, #7b2ff7, #f107a3);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(241, 7, 163, 0.5);
+    }
+
+    .back-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(241, 7, 163, 0.8);
     }
 
     /* ---------- TEAM SECTION ---------- */
@@ -144,6 +163,7 @@
   <canvas></canvas>
 
   <div class="container">
+    
     <h1>About Our Team</h1>
     <p>
       <strong>Internship Finder</strong> is a project created under the <strong>CodeSapiens Mentorship Program</strong>,
@@ -180,12 +200,13 @@
       </div>
     </div>
   </div>
+  <center><a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a></center>
 
   <footer>
     © 2025 Internship Finder | Built with 💙 under the <a href="#">CodeSapiens Mentorship Program</a>
   </footer>
 
-  <!-- ---------- STAR BACKGROUND SCRIPT (identical to Thank You page) ---------- -->
+  <!-- ---------- STAR BACKGROUND SCRIPT ---------- -->
   <script>
     const STAR_COLOR = '#fff';
     const STAR_SIZE = 3;

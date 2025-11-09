@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>INTERNSHIP FINDER APP</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You - Internship Finder</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* -------- STAR BACKGROUND STYLING -------- */
+    /* ---------- STAR BACKGROUND ---------- */
     body {
-      min-height: 100vh; /* ✅ allow scrolling */
+      width: 100%;
+      height: 100vh;
       background-color: #000;
-      background-image: radial-gradient(circle at top right, rgba(121, 68, 154, 0.15), transparent),
-        radial-gradient(circle at 20% 80%, rgba(41, 196, 255, 0.15), transparent);
+      background-image: radial-gradient(circle at top right, rgba(255, 87, 34, 0.15), transparent),
+        radial-gradient(circle at 20% 80%, rgba(33, 150, 243, 0.15), transparent);
+      overflow: hidden;
       margin: 0;
       padding: 0;
       font-family: "Montserrat", sans-serif;
       color: white;
-      letter-spacing: 0.5px;
-      overflow-x: hidden; /* ✅ prevent sideways scroll only */
     }
 
     canvas {
@@ -26,172 +27,132 @@
       height: 100%;
       top: 0;
       left: 0;
-      z-index: -1; /* ✅ stays behind content */
+      z-index: 0;
     }
 
-    /* -------- FORM CONTAINER -------- */
+    /* ---------- MAIN CONTAINER ---------- */
     .container {
       position: relative;
       z-index: 1;
       text-align: center;
-      max-width: 700px;
-      margin: 80px auto;
-      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+      padding: 60px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 25px;
       backdrop-filter: blur(15px);
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      top: 50%;
+      transform: translateY(-50%);
       animation: fadeIn 1.2s ease-in;
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
       background: linear-gradient(135deg, #7b2ff7, #f107a3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
     }
 
-    h2 {
-      font-size: 1.3rem;
-      margin-top: 0;
-      color: rgba(255, 255, 255, 0.9);
+    p {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 30px;
     }
 
-    hr {
-      width: 60%;
-      margin: 20px auto;
-      border: 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    table {
-      margin: auto;
-    }
-
-    td {
-      padding: 10px;
-      text-align: left;
-    }
-
-    label {
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.85);
-    }
-
-    input, select {
-      padding: 10px;
-      border-radius: 10px;
+    /* ---------- INPUT BOXES ---------- */
+    input {
+      width: 80%;
+      padding: 12px;
+      margin: 10px 0;
       border: none;
-      width: 250px;
+      border-radius: 25px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
       font-size: 1rem;
       outline: none;
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
     }
 
-    input:focus, select:focus {
-      box-shadow: 0 0 10px rgba(121, 68, 154, 0.8), 0 0 20px rgba(41, 196, 255, 0.4);
-      transform: scale(1.03);
+    input::placeholder {
+      color: rgba(255,255,255,0.7);
     }
 
-    /* -------- BUTTON STYLES -------- */
+    /* ---------- BUTTONS ---------- */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
     .btn {
       text-decoration: none;
       color: white;
       padding: 14px 35px;
       border-radius: 35px;
       font-weight: 600;
-      letter-spacing: 0.8px;
       transition: all 0.3s ease;
       font-size: 1rem;
-      border: none;
-      cursor: pointer;
-      margin: 10px;
     }
 
     .btn.primary {
-      background: linear-gradient(135deg, #47068c, #13387c);
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
     }
 
     .btn.secondary {
-      background: linear-gradient(135deg, #1989a8, #114b97);
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
     }
 
     .btn:hover {
       transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-40px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(-60px); }
+      to { opacity: 1; transform: translateY(-50%); }
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      position: fixed;
+      bottom: 15px;
+      width: 100%;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      z-index: 2;
+    }
+
+    footer span {
+      color: #ff4081;
     }
   </style>
 </head>
-
 <body>
-  <canvas></canvas> <!-- ✅ Star animation background -->
+  <canvas></canvas>
 
   <div class="container">
-    <h1>THE EASIEST WAY TO FIND YOUR PREFERRED INTERNSHIP</h1>
-    <h2>SIGN UP FOR THE BEST OPPORTUNITY!</h2>
-    <hr>
+    <h1>Welcome Back 🌟</h1>
+    <p>Please enter your username and password to continue.</p>
 
-    <form action="save_signup.php" method="POST">
-      <table>
-        <tr>
-          <td><label for="name">NAME</label></td>
-          <td><input type="text" id="name" name="name" placeholder="Enter your name" required></td>
-        </tr>
-        <tr>
-          <td><label for="age">AGE</label></td>
-          <td><input type="number" id="age" name="age" placeholder="Enter your age" required></td>
-        </tr>
-        <tr>
-          <td><label for="dob">DOB</label></td>
-          <td><input type="date" id="dob" name="dob" required></td>
-        </tr>
-        <tr>
-          <td><label for="email">GMAIL</label></td>
-          <td><input type="email" id="email" name="email" placeholder="Enter your mail" required></td>
-        </tr>
-        <tr>
-          <td><label for="gender">GENDER</label></td>
-          <td>
-            <select id="gender" name="gender" required>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td><label for="phone">PHONE NUMBER</label></td>
-          <td><input type="tel" id="phone" name="phone" placeholder="Enter your number" required></td>
-        </tr>
-        <tr>
-          <td><label for="field_of_study">FIELD OF STUDY</label></td>
-          <td><input type="text" id="field_of_study" name="field_of_study" placeholder="Enter your field of study" required></td>
-        </tr>
-        <tr>
-          <td><label for="college">COLLEGE NAME</label></td>
-          <td><input type="text" id="college" name="college" placeholder="Enter your college" required></td>
-        </tr>
-        <tr>
-          <td colspan="2" style="text-align:center;">
-            <a href="starrylogin.html" class="btn primary">Sign Up</a>
+    <input type="text" placeholder="Enter your username" />
+    <input type="password" placeholder="Enter your password" />
 
-             
-            <button type="reset" class="btn secondary">Reset</button>
-          </td>
-        </tr>
-      </table>
-    </form>
+    <div class="buttons">
+      <a href="dashboard.html" class="btn primary">Sign In</a>
+      <a href="index.html" class="btn secondary">Back to Home</a>
+    </div>
   </div>
-  
 
+  <footer>Made by <b>V3</b> <span>❤️</span> under <b>Codesapiens</b></footer>
+
+  <!-- ---------- STAR BACKGROUND SCRIPT ---------- -->
   <script>
-    /* -------- STAR ANIMATION SCRIPT -------- */
     const STAR_COLOR = '#fff';
     const STAR_SIZE = 3;
     const STAR_MIN_SCALE = 0.2;
@@ -220,8 +181,7 @@
     function generate() {
       for (let i = 0; i < STAR_COUNT; i++) {
         stars.push({
-          x: 0,
-          y: 0,
+          x: 0, y: 0,
           z: STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE)
         });
       }
@@ -234,35 +194,26 @@
 
     function recycleStar(star) {
       let direction = 'z';
-      let vx = Math.abs(velocity.x),
-          vy = Math.abs(velocity.y);
-
+      let vx = Math.abs(velocity.x), vy = Math.abs(velocity.y);
       if (vx > 1 || vy > 1) {
-        let axis = vx > vy
-          ? (Math.random() < vx / (vx + vy) ? 'h' : 'v')
-          : (Math.random() < vy / (vx + vy) ? 'v' : 'h');
+        let axis = vx > vy ? (Math.random() < vx / (vx + vy) ? 'h' : 'v') : (Math.random() < vy / (vx + vy) ? 'v' : 'h');
         if (axis === 'h') direction = velocity.x > 0 ? 'l' : 'r';
         else direction = velocity.y > 0 ? 't' : 'b';
       }
 
       star.z = STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE);
-
       if (direction === 'z') {
         star.z = 0.1;
         star.x = Math.random() * width;
         star.y = Math.random() * height;
       } else if (direction === 'l') {
-        star.x = -OVERFLOW_THRESHOLD;
-        star.y = height * Math.random();
+        star.x = -OVERFLOW_THRESHOLD; star.y = height * Math.random();
       } else if (direction === 'r') {
-        star.x = width + OVERFLOW_THRESHOLD;
-        star.y = height * Math.random();
+        star.x = width + OVERFLOW_THRESHOLD; star.y = height * Math.random();
       } else if (direction === 't') {
-        star.x = width * Math.random();
-        star.y = -OVERFLOW_THRESHOLD;
+        star.x = width * Math.random(); star.y = -OVERFLOW_THRESHOLD;
       } else if (direction === 'b') {
-        star.x = width * Math.random();
-        star.y = height + OVERFLOW_THRESHOLD;
+        star.x = width * Math.random(); star.y = height + OVERFLOW_THRESHOLD;
       }
     }
 
@@ -277,14 +228,12 @@
 
     function step() {
       context.clearRect(0, 0, width, height);
-      update();
-      render();
+      update(); render();
       requestAnimationFrame(step);
     }
 
     function update() {
-      velocity.tx *= 0.96;
-      velocity.ty *= 0.96;
+      velocity.tx *= 0.96; velocity.ty *= 0.96;
       velocity.x += (velocity.tx - velocity.x) * 0.8;
       velocity.y += (velocity.ty - velocity.y) * 0.8;
 
@@ -294,15 +243,10 @@
         star.x += (star.x - width / 2) * velocity.z * star.z;
         star.y += (star.y - height / 2) * velocity.z * star.z;
         star.z += velocity.z;
-
         if (
-          star.x < -OVERFLOW_THRESHOLD ||
-          star.x > width + OVERFLOW_THRESHOLD ||
-          star.y < -OVERFLOW_THRESHOLD ||
-          star.y > height + OVERFLOW_THRESHOLD
-        ) {
-          recycleStar(star);
-        }
+          star.x < -OVERFLOW_THRESHOLD || star.x > width + OVERFLOW_THRESHOLD ||
+          star.y < -OVERFLOW_THRESHOLD || star.y > height + OVERFLOW_THRESHOLD
+        ) recycleStar(star);
       });
     }
 
@@ -315,9 +259,7 @@
         context.strokeStyle = STAR_COLOR;
         context.moveTo(star.x, star.y);
 
-        var tailX = velocity.x * 2,
-            tailY = velocity.y * 2;
-
+        let tailX = velocity.x * 2, tailY = velocity.y * 2;
         if (Math.abs(tailX) < 0.1) tailX = 0.5;
         if (Math.abs(tailY) < 0.1) tailY = 0.5;
 
@@ -328,13 +270,11 @@
 
     function movePointer(x, y) {
       if (typeof pointerX === 'number' && typeof pointerY === 'number') {
-        let ox = x - pointerX,
-            oy = y - pointerY;
+        let ox = x - pointerX, oy = y - pointerY;
         velocity.tx += (ox / 8 * scale) * (touchInput ? 1 : -1);
         velocity.ty += (oy / 8 * scale) * (touchInput ? 1 : -1);
       }
-      pointerX = x;
-      pointerY = y;
+      pointerX = x; pointerY = y;
     }
 
     function onMouseMove(event) {
@@ -349,8 +289,7 @@
     }
 
     function onMouseLeave() {
-      pointerX = null;
-      pointerY = null;
+      pointerX = null; pointerY = null;
     }
   </script>
 </body>
