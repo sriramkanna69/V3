@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Motivation & Quiz — Internship Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ---------- STAR BACKGROUND (Type A) ---------- */
+    html,body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: #000;
+      background-image: radial-gradient(circle at top right, rgba(121, 68, 154, 0.13), transparent),
+        radial-gradient(circle at 20% 80%, rgba(41, 196, 255, 0.13), transparent);
+      overflow-x: hidden;
+      overflow-y: auto; /* allow scroll */
+      font-family: "Montserrat", sans-serif;
+      color: white;
+    }
+
+    canvas {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0; /* behind content */
+      pointer-events: none;
+    }
+
+    /* ---------- PAGE LAYOUT ---------- */
+    .page {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 36px auto;
+      padding: 0 18px 80px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease;
+    }
+
+    .card:hover { transform: translateY(-4px); }
+
+    .top-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: linear-gradient(135deg,#7b2ff7,#f107a3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ---------- STREAK & QUOTE ---------- */
+    .streak {
+      text-align: right;
+      min-width: 160px;
+    }
+    .streak .count {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffd166;
+    }
+
+    #quoteBox {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.18);
+      font-size: 1.12rem;
+      text-align: center;
+      min-height: 66px;
+      display:flex;align-items:center;justify-content:center;
+    }
+
+    .controls {
+      margin-top: 12px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn.primary {
+      background: linear-gradient(135deg,#6a11cb,#2575fc);
+      color: white;
+    }
+    .btn.ghost {
+      background: transparent;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    /* ---------- QUIZ ---------- */
+    .quiz-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+    .quiz-header h2 {
+      margin:0;
+      font-size:1.25rem;
+      background: linear-gradient(135deg,#00c6ff,#8a2be2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .quiz-info { color: #cbd5e1; font-size:0.95rem; }
+
+    .question-box {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.12);
+    }
+
+    .options { margin-top:10px; display:flex;flex-direction:column; gap:8px; }
+
+    .option {
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      border: 1px solid transparent;
+      display:flex;align-items:center;gap:10px;
+    }
+    .option:hover { transform: translateY(-2px); background: rgba(255,255,255,0.07); }
+
+    .option.correct { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.6); }
+    .option.wrong { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.6); opacity:0.95; }
+
+    .quiz-footer {
+      margin-top:14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .muted { color: rgba(255,255,255,0.7); font-size:0.95rem; }
+
+    .locked {
+      opacity: 0.7;
+      filter: grayscale(10%);
+      pointer-events: none;
+    }
+
+    @media (max-width:640px) {
+      .top-row { flex-direction:column; align-items:flex-start; gap:10px; }
+      .streak { text-align:left; }
+    }
+  </style>
+</head>
+<body>
+  <canvas></canvas>
+
+  <div class="page">
+    <!-- MOTIVATION + STREAK CARD -->
+    <div class="card">
+      <div class="top-row">
+        <div>
+          <h1>✨ Daily Motivation</h1>
+          <div style="color:rgba(255,255,255,0.8);margin-top:6px;">Little boosts to keep you consistent.</div>
+        </div>
+
+        <div class="streak" aria-live="polite">
+          <div style="color:rgba(255,255,255,0.85);font-size:0.95rem">🔥 Streak</div>
+          <div class="count" id="streakCount">0</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.7);" id="streakLabel">days in a row</div>
+        </div>
+      </div>
+
+      <div id="quoteBox">Loading your daily quote...</div>
+
+      <div class="controls">
+        <button class="btn primary" id="newQuoteBtn">New Quote ✨</button>
+        <button class="btn ghost" id="copyQuoteBtn">Copy Quote</button>
+      </div>
+    </div>
+
+    <!-- QUIZ CARD -->
+    <div class="card" id="quizCard">
+      <div class="quiz-header">
+        <h2>🎯 Mini Trivia — Mixed Quiz</h2>
+        <div class="quiz-info">You can answer up to <strong>3</strong> questions this session. Remaining: <span id="remaining">3</span></div>
+      </div>
+
+      <div id="questionArea" class="question-box">
+        <!-- question & options injected here -->
+      </div>
+
+      <div class="quiz-footer">
+        <div class="muted" id="feedbackText">Select an option to answer.</div>
+        <div>
+          <button class="btn primary" id="nextBtn">Next</button>
+          <button class="btn ghost" id="resetSessionBtn">Reset Session</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  /*****************************************************************
+   * Star background animation — exact same engine you provided
+   *****************************************************************/
+    const STAR_COLOR = '#fff';
+    const STAR_SIZE = 3;
+    const STAR_MIN_SCALE = 0.2;
+    const OVERFLOW_THRESHOLD = 50;
+    const STAR_COUNT = (window.innerWidth + window.innerHeight) / 8;
+
+    const canvas = document.querySelector('canvas'),
+          context = canvas.getContext('2d');
+
+    let scale = 1, width, height;
+    let stars = [];
+    let pointerX, pointerY;
+    let velocity = { x: 0, y: 0, tx: 0, ty: 0, z: 0.0005 };
+    let touchInput = false;
+
+    generate();
+    resize();
+    step();
+
+    window.onresize = resize;
+    canvas.onmousemove = onMouseMove;
+    canvas.ontouchmove = onTouchMove;
+    canvas.ontouchend = onMouseLeave;
+    document.onmouseleave = onMouseLeave;
+
+    function generate() {
+      stars = [];
+      for (let i = 0; i < STAR_COUNT; i++) {
+        stars.push({
+          x: 0, y: 0,
+          z: STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE)
+        });
+      }
+    }
+
+    function placeStar(star) {
+      star.x = Math.random() * width;
+      star.y = Math.random() * height;
+    }
+
+    function recycleStar(star) {
+      let direction = 'z';
+      let vx = Math.abs(velocity.x), vy = Math.abs(velocity.y);
+      if (vx > 1 || vy > 1) {
+        let axis = vx > vy ? (Math.random() < vx / (vx + vy) ? 'h' : 'v') : (Math.random() < vy / (vx + vy) ? 'v' : 'h');
+        if (axis === 'h') direction = velocity.x > 0 ? 'l' : 'r';
+        else direction = velocity.y > 0 ? 't' : 'b';
+      }
+
+      star.z = STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE);
+      if (direction === 'z') {
+        star.z = 0.1;
+        star.x = Math.random() * width;
+        star.y = Math.random() * height;
+      } else if (direction === 'l') {
+        star.x = -OVERFLOW_THRESHOLD; star.y = height * Math.random();
+      } else if (direction === 'r') {
+        star.x = width + OVERFLOW_THRESHOLD; star.y = height * Math.random();
+      } else if (direction === 't') {
+        star.x = width * Math.random(); star.y = -OVERFLOW_THRESHOLD;
+      } else if (direction === 'b') {
+        star.x = width * Math.random(); star.y = height + OVERFLOW_THRESHOLD;
+      }
+    }
+
+    function resize() {
+      scale = window.devicePixelRatio || 1;
+      width = window.innerWidth * scale;
+      height = window.innerHeight * scale;
+      canvas.width = width;
+      canvas.height = height;
+      stars.forEach(placeStar);
+    }
+
+    function step() {
+      context.clearRect(0, 0, width, height);
+      update(); render();
+      requestAnimationFrame(step);
+    }
+
+    function update() {
+      velocity.tx *= 0.96; velocity.ty *= 0.96;
+      velocity.x += (velocity.tx - velocity.x) * 0.8;
+      velocity.y += (velocity.ty - velocity.y) * 0.8;
+
+      stars.forEach((star) => {
+        star.x += velocity.x * star.z;
+        star.y += velocity.y * star.z;
+        star.x += (star.x - width / 2) * velocity.z * star.z;
+        star.y += (star.y - height / 2) * velocity.z * star.z;
+        star.z += velocity.z;
+        if (
+          star.x < -OVERFLOW_THRESHOLD || star.x > width + OVERFLOW_THRESHOLD ||
+          star.y < -OVERFLOW_THRESHOLD || star.y > height + OVERFLOW_THRESHOLD
+        ) recycleStar(star);
+      });
+    }
+
+    function render() {
+      stars.forEach((star) => {
+        context.beginPath();
+        context.lineCap = 'round';
+        context.lineWidth = STAR_SIZE * star.z * scale;
+        context.globalAlpha = 0.5 + 0.5 * Math.random();
+        context.strokeStyle = STAR_COLOR;
+        context.moveTo(star.x, star.y);
+
+        let tailX = velocity.x * 2, tailY = velocity.y * 2;
+        if (Math.abs(tailX) < 0.1) tailX = 0.5;
+        if (Math.abs(tailY) < 0.1) tailY = 0.5;
+
+        context.lineTo(star.x + tailX, star.y + tailY);
+        context.stroke();
+      });
+    }
+
+    function movePointer(x, y) {
+      if (typeof pointerX === 'number' && typeof pointerY === 'number') {
+        let ox = x - pointerX, oy = y - pointerY;
+        velocity.tx += (ox / 8 * scale) * (touchInput ? 1 : -1);
+        velocity.ty += (oy / 8 * scale) * (touchInput ? 1 : -1);
+      }
+      pointerX = x; pointerY = y;
+    }
+
+    function onMouseMove(e) { touchInput = false; movePointer(e.clientX, e.clientY); }
+    function onTouchMove(e) { touchInput = true; movePointer(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }
+    function onMouseLeave() { pointerX = null; pointerY = null; }
+
+  /*****************************************************************
+   * Page Logic: Quotes, Streak counter, Quiz (3 questions per session)
+   *****************************************************************/
+
+    // Quotes array
+    const quotes = [
+      "Your future self will thank you for your consistency.",
+      "Small progress every day becomes big success.",
+      "You are capable of amazing things 🌟",
+      "Dream big, start small, stay consistent.",
+      "Internships open doors — keep pushing!",
+      "You don’t need to be perfect, just better than yesterday.",
+      "Stay hungry for learning — that’s your real power.",
+      "Every expert was once a beginner.",
+      "Your efforts today become your confidence tomorrow.",
+      "Believe in the process — you’re getting better."
+    ];
+
+    const quoteBox = document.getElementById('quoteBox');
+    const newQuoteBtn = document.getElementById('newQuoteBtn');
+    const copyQuoteBtn = document.getElementById('copyQuoteBtn');
+
+    function showRandomQuote() {
+      const q = quotes[Math.floor(Math.random() * quotes.length)];
+      quoteBox.textContent = `“${q}”`;
+    }
+
+    // show on load
+    showRandomQuote();
+
+    newQuoteBtn.addEventListener('click', showRandomQuote);
+    copyQuoteBtn.addEventListener('click', () => {
+      const text = quoteBox.textContent;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          const prev = copyQuoteBtn.textContent;
+          copyQuoteBtn.textContent = 'Copied ✓';
+          setTimeout(() => copyQuoteBtn.textContent = prev, 1700);
+        }).catch(()=> alert('Copy failed'));
+      } else {
+        alert('Clipboard not supported');
+      }
+    });
+
+    /* ---------- Streak Counter (localStorage) ---------- */
+    const STREAK_KEY = 'if_streak_count';
+    const LAST_KEY = 'if_last_visit';
+
+    function getTodayYMD() {
+      const d = new Date();
+      // use local date only, format YYYY-MM-DD
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+
+    function getYesterdayYMD() {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+
+    function updateStreakOnLoad() {
+      let streak = parseInt(localStorage.getItem(STREAK_KEY)) || 0;
+      const last = localStorage.getItem(LAST_KEY); // YYYY-MM-DD or null
+      const today = getTodayYMD();
+      const yesterday = getYesterdayYMD();
+
+      if (last === today) {
+        // already counted today
+      } else if (last === yesterday) {
+        // consecutive day
+        streak = streak + 1;
+        localStorage.setItem(STREAK_KEY, streak);
+        localStorage.setItem(LAST_KEY, today);
+      } else {
+        // missed days or first visit -> reset to 1
+        streak = 1;
+        localStorage.setItem(STREAK_KEY, streak);
+        localStorage.setItem(LAST_KEY, today);
+      }
+
+      // update UI
+      document.getElementById('streakCount').textContent = streak;
+    }
+
+    updateStreakOnLoad();
+
+    /* ---------- QUIZ (max 3 questions per login/session) ---------- */
+
+    // Mixed question pool (type B): some fun + internship related
+    const pool = [
+      { q: "How many internships is a good daily application target?", opts:["1","2–3","10"], a:"2–3" },
+      { q: "What helps most for long-term growth?", opts:["Consistency","Luck","Skipping practice"], a:"Consistency" },
+      { q: "Which helps your resume most?", opts:["Projects","Random quotes","Bright colors"], a:"Projects" },
+      { q: "What should you do before an interview?", opts:["Research the company","Panic","Ignore the role"], a:"Research the company" },
+      { q: "Which is a front-end technology?", opts:["CSS","Python","SQL"], a:"CSS" },
+      { q: "Best place to show projects?", opts:["Portfolio/GitHub","Private files","Social spam"], a:"Portfolio/GitHub" },
+      { q: "Good first step to learn ML?", opts:["Learn Python basics","Buy expensive books only","Avoid datasets"], a:"Learn Python basics" },
+      { q: "Why track applications?", opts:["To improve follow-ups","To forget them","To brag"], a:"To improve follow-ups" }
+    ];
+
+    // Select 3 random unique questions per session
+    function pickQuestions() {
+      const copy = pool.slice();
+      const selected = [];
+      for (let i=0;i<3;i++) {
+        const idx = Math.floor(Math.random()*copy.length);
+        selected.push(copy.splice(idx,1)[0]);
+      }
+      return selected;
+    }
+
+    // Session-tracked number of answered questions
+    const ATTEMPT_KEY = 'if_quiz_attempts'; // use sessionStorage so it's per session
+    function getAttempts() {
+      return parseInt(sessionStorage.getItem(ATTEMPT_KEY)) || 0;
+    }
+    function setAttempts(n) {
+      sessionStorage.setItem(ATTEMPT_KEY, String(n));
+      document.getElementById('remaining').textContent = Math.max(0, 3 - n);
+    }
+
+    let questions = [];
+    let currentIndex = 0;
+    let attempts = getAttempts();
+
+    // If user already used up 3 attempts this session, lock quiz immediately
+    function initQuiz() {
+      attempts = getAttempts();
+      setAttempts(attempts);
+
+      if (attempts >= 3) {
+        lockQuiz("You have answered 3 questions this session. Come back next login.");
+        return;
+      }
+
+      questions = pickQuestions();
+      currentIndex = 0;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const qa = questions[currentIndex];
+      const area = document.getElementById('questionArea');
+      area.innerHTML = ''; // clear
+
+      // show question header + number
+      const qnum = document.createElement('div');
+      qnum.innerHTML = `<strong>Question ${currentIndex+1} of 3</strong>`;
+      qnum.style.marginBottom = '8px';
+      area.appendChild(qnum);
+
+      // question text
+      const qtext = document.createElement('div');
+      qtext.innerHTML = `<div style="font-weight:600;margin-bottom:8px">${qa.q}</div>`;
+      area.appendChild(qtext);
+
+      // options
+      const opts = document.createElement('div');
+      opts.className = 'options';
+      qa.opts.forEach(opt => {
+        const el = document.createElement('div');
+        el.className = 'option';
+        el.tabIndex = 0;
+        el.textContent = opt;
+        el.addEventListener('click', () => selectOption(el, opt));
+        el.addEventListener('keydown', (e)=>{ if(e.key==='Enter') selectOption(el,opt); });
+        opts.appendChild(el);
+      });
+      area.appendChild(opts);
+
+      // update controls
+      document.getElementById('feedbackText').textContent = `Remaining this session: ${3 - attempts}`;
+    }
+
+    // when user selects an option
+    let answeredThisQuestion = false;
+    function selectOption(el, value) {
+      if (answeredThisQuestion) return;
+      answeredThisQuestion = true;
+
+      const qa = questions[currentIndex];
+      const allOpts = document.querySelectorAll('.option');
+      allOpts.forEach(o => o.classList.remove('correct','wrong'));
+
+      if (value === qa.a) {
+        el.classList.add('correct');
+        document.getElementById('feedbackText').textContent = '✅ Correct!';
+      } else {
+        el.classList.add('wrong');
+        // highlight the correct one
+        allOpts.forEach(o => { if (o.textContent.trim()===qa.a) o.classList.add('correct'); });
+        document.getElementById('feedbackText').textContent = '❌ Not quite — correct option highlighted';
+      }
+
+      // increment attempts and persist
+      attempts = getAttempts() + 1;
+      setAttempts(attempts);
+
+      // after a short delay, automatically move to next if attempts < 3
+      setTimeout(() => {
+        if (attempts >= 3) {
+          lockQuiz("You have reached 3 answers this session. Come back next login to try more!");
+        } else {
+          // move to next question (if any)
+          currentIndex++;
+          if (currentIndex < 3) {
+            answeredThisQuestion = false;
+            renderQuestion();
+          } else {
+            // End of selected questions (rare, since attempts cap may be reached earlier)
+            lockQuiz("You have completed the quiz block for this session. Great job!");
+          }
+        }
+      }, 900);
+    }
+
+    function lockQuiz(message) {
+      const area = document.getElementById('questionArea');
+      area.innerHTML = `<div style="padding:16px;border-radius:12px;background:rgba(0,0,0,0.12);">${message}</div>`;
+      document.getElementById('feedbackText').textContent = message;
+      // visually mark quiz card locked
+      document.getElementById('quizCard').classList.add('locked');
+    }
+
+    // Next button: allows user to skip to next if haven't answered (consumes an attempt)
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      if (attempts >= 3) {
+        lockQuiz("No more questions allowed this session.");
+        return;
+      }
+      if (!questions.length) initQuiz();
+      // If user hasn't answered current question but wants to skip, count as attempt and move
+      if (!answeredThisQuestion) {
+        // mark no selection (show correct)
+        const qa = questions[currentIndex];
+        document.querySelectorAll('.option').forEach(o => {
+          if (o.textContent.trim() === qa.a) o.classList.add('correct');
+        });
+        answeredThisQuestion = true;
+        attempts = getAttempts() + 1;
+        setAttempts(attempts);
+      }
+
+      setTimeout(() => {
+        if (attempts >= 3) {
+          lockQuiz("You have reached 3 answers this session. Come back next login!");
+        } else {
+          currentIndex++;
+          if (currentIndex < 3) {
+            answeredThisQuestion = false;
+            renderQuestion();
+          } else {
+            lockQuiz("You reached the end of this quiz block for the session.");
+          }
+        }
+      }, 400);
+    });
+
+    // Reset session attempts (for testing) — clears sessionStorage attempts only
+    document.getElementById('resetSessionBtn').addEventListener('click', () => {
+      sessionStorage.removeItem(ATTEMPT_KEY);
+      setAttempts(0);
+      questions = pickQuestions();
+      currentIndex = 0;
+      answeredThisQuestion = false;
+      document.getElementById('quizCard').classList.remove('locked');
+      renderQuestion();
+    });
+
+    // initialize UI state
+    setAttempts(getAttempts());
+    initQuiz();
+
+  </script>
+</body>
+</html>
