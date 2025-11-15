@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skill Gap Analyzer - Internship Finder</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: #000;
+      background-image: radial-gradient(circle at top right, rgba(121, 68, 154, 0.13), transparent),
+        radial-gradient(circle at 20% 80%, rgba(41, 196, 255, 0.13), transparent);
+      overflow-x: hidden;
+      overflow-y: auto;
+      margin: 0;
+      padding: 0;
+      font-family: "Montserrat", sans-serif;
+      color: white;
+    }
+
+    canvas {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 650px;
+      margin: 80px auto 100px auto;
+      padding: 50px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 25px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 1.2s ease-in;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #7b2ff7, #f107a3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 30px;
+    }
+
+    select, input {
+      width: 80%;
+      padding: 13px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 25px;
+      text-align: center;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    select option {
+      background: #1a1a1a;
+      color: #ffffff;
+    }
+
+    input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .btn {
+      text-decoration: none;
+      color: white;
+      padding: 14px 35px;
+      border-radius: 35px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .btn.primary { background: linear-gradient(135deg, #6a11cb, #2575fc); }
+    .btn.secondary { background: linear-gradient(135deg, #00c6ff, #0072ff); margin-left: 10px; }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+    }
+
+    #results {
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.3);
+      text-align: left;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      display: none;
+    }
+
+    /* ===== Percentage Bar ===== */
+    .percent-box {
+      background: rgba(255,255,255,0.07);
+      padding: 12px 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .percent-bar {
+      width: 100%;
+      height: 12px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .percent-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #7b2ff7, #f107a3);
+      transition: width 1s ease;
+    }
+
+    /* ===== Roadmap Cards ===== */
+    .roadmap-tag {
+      background: rgba(255,255,255,0.08);
+      padding: 12px 15px;
+      border-radius: 14px;
+      backdrop-filter: blur(8px);
+      border-left: 4px solid #7b2ff7;
+      margin-bottom: 12px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: tagSlide 0.45s ease forwards;
+    }
+
+    @keyframes tagSlide {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .tag-title {
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: #9d78ff;
+    }
+
+    .tag-line {
+      margin: 3px 0;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    /* Download PDF button */
+    .download-wrap {
+      text-align: center;
+      margin-top: 18px;
+    }
+
+    .btn.pdf {
+      padding: 10px 22px;
+      border-radius: 18px;
+      font-weight: 700;
+      background: linear-gradient(135deg,#ffffff,#e6e6e6);
+      color: #111;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    }
+
+    footer {
+      text-align: center;
+      margin: 40px 0 20px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+  </style>
+</head>
+
+<body>
+<canvas></canvas>
+
+<div class="container">
+  <h1>Skill Gap Analyzer 🔍</h1>
+  <p>Find out which skills you need to master your dream domain.</p>
+
+  <select id="domainInput">
+       <option value="">-- Select Domain --</option>
+       <option value="webdev">🌐 Web Development</option>
+       <option value="ml">🤖 Machine Learning</option>
+       <option value="cyber">🔐 Cyber Security</option>
+       <option value="uiux">🎨 UI/UX Design</option>
+       <option value="datasci">📊 Data Science</option>
+       <option value="cloud">☁ Cloud Computing</option>
+       <option value="blockchain">⛓ Blockchain</option>
+  </select>
+
+  <input type="text" id="skillsInput" placeholder="Enter your skills (e.g., HTML, CSS, Python)" />
+
+  <a href="#" class="btn primary" onclick="analyzeSkills()">Analyze</a>
+  <a href="dashboard.html" class="btn secondary">Back</a>
+
+  <div id="results"></div>
+</div>
+
+<footer>
+  © 2025 Internship Finder | Built with 💙 under the <a href="#">CodeSapiens Mentorship Program</a>
+</footer>
+
+
+<!-- ===================== STAR ANIMATION (UNCHANGED) ===================== -->
+<script>
+/* SAME STAR ANIMATION CODE (NO CHANGES) */
+const STAR_COLOR='#fff';const STAR_SIZE=3;const STAR_MIN_SCALE=0.2;
+const OVERFLOW_THRESHOLD=50;const STAR_COUNT=(window.innerWidth+window.innerHeight)/8;
+const canvas=document.querySelector('canvas'),context=canvas.getContext('2d');
+let scale=1,width,height,stars=[];let pointerX,pointerY,touchInput=false;
+let velocity={x:0,y:0,tx:0,ty:0,z:0.0005};
+
+function generate(){for(let i=0;i<STAR_COUNT;i++){stars.push({x:0,y:0,z:STAR_MIN_SCALE+Math.random()*(1-STAR_MIN_SCALE)});} }
+function placeStar(s){ s.x=Math.random()*width; s.y=Math.random()*height; }
+function recycleStar(s){ let d='z'; let vx=Math.abs(velocity.x), vy=Math.abs(velocity.y);
+  if(vx>1||vy>1){ let a = vx>vy ? (Math.random()<vx/(vx+vy)?'h':'v') : (Math.random()<vy/(vx+vy)?'v':'h');
+    d = a==='h' ? (velocity.x>0?'l':'r') : (velocity.y>0?'t':'b'); }
+  s.z = STAR_MIN_SCALE + Math.random()*(1-STAR_MIN_SCALE);
+  if(d==='z'){ s.z=0.1; s.x=Math.random()*width; s.y=Math.random()*height; }
+  else if(d==='l'){ s.x=-OVERFLOW_THRESHOLD; s.y=Math.random()*height; }
+  else if(d==='r'){ s.x=width+OVERFLOW_THRESHOLD; s.y=Math.random()*height; }
+  else if(d==='t'){ s.x=Math.random()*width; s.y=-OVERFLOW_THRESHOLD; }
+  else { s.x=Math.random()*width; s.y=height+OVERFLOW_THRESHOLD; }
+}
+function resize(){ scale = window.devicePixelRatio || 1; width = window.innerWidth * scale; height = window.innerHeight * scale;
+  canvas.width = width; canvas.height = height; stars.forEach(placeStar); }
+function step(){ context.clearRect(0,0,width,height); update(); render(); requestAnimationFrame(step); }
+function update(){ velocity.tx *= 0.96; velocity.ty *= 0.96; velocity.x += (velocity.tx - velocity.x) * 0.8; velocity.y += (velocity.ty - velocity.y) * 0.8;
+  stars.forEach(s=>{ s.x += velocity.x * s.z; s.y += velocity.y * s.z; s.x += (s.x - width/2) * velocity.z * s.z; s.y += (s.y - height/2) * velocity.z * s.z; s.z += velocity.z;
+    if(s.x < -OVERFLOW_THRESHOLD || s.x > width + OVERFLOW_THRESHOLD || s.y < -OVERFLOW_THRESHOLD || s.y > height + OVERFLOW_THRESHOLD) recycleStar(s);
+  });
+}
+function render(){ stars.forEach(s=>{ context.beginPath(); context.lineCap='round'; context.lineWidth = STAR_SIZE * s.z * scale; context.globalAlpha = 0.5 + 0.5 * Math.random();
+  context.strokeStyle = STAR_COLOR; context.moveTo(s.x,s.y); let tx = velocity.x*2, ty = velocity.y*2; if(Math.abs(tx)<0.1) tx = 0.5; if(Math.abs(ty)<0.1) ty = 0.5;
+  context.lineTo(s.x + tx, s.y + ty); context.stroke(); }); }
+function movePointer(x,y){ if(typeof pointerX === 'number' && typeof pointerY === 'number'){ let ox = x - pointerX, oy = y - pointerY;
+  velocity.tx += (ox/8 * scale) * (touchInput ? 1 : -1); velocity.ty += (oy/8 * scale) * (touchInput ? 1 : -1); } pointerX = x; pointerY = y; }
+function onMouseMove(e){ touchInput=false; movePointer(e.clientX, e.clientY); }
+function onTouchMove(e){ touchInput=true; movePointer(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }
+function onMouseLeave(){ pointerX = null; pointerY = null; }
+
+generate(); resize(); step();
+window.onresize = resize; canvas.onmousemove = onMouseMove; canvas.ontouchmove = onTouchMove; canvas.ontouchend = onMouseLeave; document.onmouseleave = onMouseLeave;
+</script>
+
+<!-- ===================== SKILL GAP LOGIC + PDF ===================== -->
+<!-- jsPDF (UMD build) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+/* Domain skills */
+const domainSkills = {
+  webdev: ["HTML","CSS","JavaScript","React","Git","API"],
+  ml: ["Python","NumPy","Pandas","Scikit-learn","ML Models"],
+  cyber: ["Networking","Linux","Firewalls","Vulnerabilities","Ethical Hacking"],
+  uiux: ["Figma","Wireframing","Prototyping","Color Theory","Design Thinking"],
+  datasci: ["Python","Statistics","Pandas","NumPy","Machine Learning","Data Visualization"],
+  cloud: ["AWS","Azure","Docker","Kubernetes","Linux","CI/CD"],
+  blockchain: ["Solidity","Smart Contracts","Ethereum","Cryptography","Web3.js"]
+};
+
+/* Unique roadmap info (lowercase keys) */
+const roadmapInfo = {
+  html:      {time:"5–8 hrs",  diff:"Easy",    proj:"Portfolio Page"},
+  css:       {time:"6–10 hrs", diff:"Easy",    proj:"Landing Page"},
+  javascript:{time:"15–25 hrs",diff:"Medium",  proj:"To-Do App"},
+  react:     {time:"12–20 hrs",diff:"Medium",  proj:"Weather App"},
+  git:       {time:"4–6 hrs",  diff:"Easy",    proj:"Version Control Practice"},
+  api:       {time:"8–12 hrs", diff:"Medium",  proj:"Fetch API Project"},
+
+  python:{time:"10–18 hrs", diff:"Medium", proj:"Data Processor"},
+  numpy:{time:"6–10 hrs", diff:"Easy", proj:"Array Calculator"},
+  pandas:{time:"10–15 hrs", diff:"Medium", proj:"CSV Analyzer"},
+  "scikit-learn":{time:"15–25 hrs", diff:"Hard", proj:"Prediction Model"},
+  "ml models":{time:"20–30 hrs", diff:"Hard", proj:"Classification Model"},
+
+  networking:{time:"8–12 hrs", diff:"Medium", proj:"Network Topology"},
+  linux:{time:"15–20 hrs", diff:"Medium", proj:"Shell Automation"},
+  firewalls:{time:"6–10 hrs", diff:"Medium", proj:"Firewall Rules"},
+  vulnerabilities:{time:"10–15 hrs", diff:"Hard", proj:"Vulnerability Report"},
+  "ethical hacking":{time:"20–30 hrs", diff:"Hard", proj:"Pen-Test Simulation"},
+
+  figma:{time:"6–10 hrs", diff:"Easy", proj:"Mobile UI"},
+  wireframing:{time:"6–10 hrs", diff:"Easy", proj:"Wireframe Set"},
+  prototyping:{time:"8–12 hrs", diff:"Medium", proj:"Clickable Prototype"},
+  "color theory":{time:"4–6 hrs", diff:"Easy", proj:"Palette Design"},
+  "design thinking":{time:"6–10 hrs", diff:"Medium", proj:"User Journey Map"},
+
+  statistics:{time:"10–15 hrs", diff:"Medium", proj:"Probability Dashboard"},
+  "data visualization":{time:"8–12 hrs", diff:"Medium", proj:"Charts Dashboard"},
+
+  aws:{time:"12–18 hrs", diff:"Medium", proj:"EC2 Deployment"},
+  azure:{time:"12–18 hrs", diff:"Medium", proj:"Cloud App"},
+  docker:{time:"10–15 hrs", diff:"Medium", proj:"Container App"},
+  kubernetes:{time:"15–30 hrs", diff:"Hard", proj:"Cluster Deployment"},
+  "ci/cd":{time:"10–18 hrs", diff:"Medium", proj:"Pipeline Setup"},
+
+  solidity:{time:"15–25 hrs", diff:"Hard", proj:"Smart Contract"},
+  "smart contracts":{time:"15–25 hrs", diff:"Hard", proj:"Token Contract"},
+  ethereum:{time:"12–20 hrs", diff:"Medium", proj:"DApp"},
+  cryptography:{time:"10–18 hrs", diff:"Hard", proj:"Encryption Tool"},
+  "web3.js":{time:"8–15 hrs", diff:"Medium", proj:"Web3 Wallet Connect"}
+};
+
+function analyzeSkills(){
+  const domain = document.getElementById("domainInput").value;
+  const skillsRaw = document.getElementById("skillsInput").value;
+  const skills = skillsRaw ? skillsRaw.split(",").map(s=>s.trim().toLowerCase()).filter(s=>s) : [];
+
+  if(!domain){ alert("Please select a domain!"); return; }
+
+  const required = domainSkills[domain].map(s => s.toLowerCase());
+  const missing = required.filter(s => !skills.includes(s));
+  const matched = required.length - missing.length;
+  const percentage = Math.round((matched / required.length) * 100);
+
+  const results = document.getElementById("results");
+  results.style.display = "block";
+
+  let roadmapHTML = "";
+  missing.forEach((skill,i)=>{
+    const info = roadmapInfo[skill] || {time:"10 hrs", diff:"Medium", proj:"Small project"};
+    roadmapHTML += `
+      <div class="roadmap-tag" style="animation-delay:${i * 0.12}s;">
+        <div class="tag-title">Step ${i+1}: ${skill.toUpperCase()}</div>
+        <div class="tag-line">⏳ Time: ${info.time}</div>
+        <div class="tag-line">⚡ Difficulty: ${info.diff}</div>
+        <div class="tag-line">🛠 Mini Project: ${info.proj}</div>
+      </div>
+    `;
+  });
+
+  // Add Download PDF button below roadmap (clean style)
+  const downloadButtonHTML = `
+    <div class="download-wrap" style="display:none;" id="downloadWrap">
+      <button class="btn pdf" id="downloadPdfBtn">Download Report as PDF</button>
+    </div>
+  `;
+
+  results.innerHTML = `
+    <h3>Results:</h3>
+
+    <p><b>Required Skills:</b> ${required.join(", ")}</p>
+    <p><b>Your Skills:</b> ${skills.length ? skills.join(", ") : "<i>None entered</i>"}</p>
+
+    <div class="percent-box">
+      <b>Internship Chance: ${percentage}%</b>
+      <div class="percent-bar">
+        <div class="percent-fill" id="percentFill"></div>
+      </div>
+    </div>
+
+    <p style="color:#ff4da6"><b>Missing Skills:</b> ${missing.length ? missing.join(", ") : "None 🎉"}</p>
+
+    <h3>Your Roadmap</h3>
+    ${ missing.length ? roadmapHTML : `<p style="color:#7bffb6"><b>You are fully prepared! 🚀</b></p>` }
+
+    ${downloadButtonHTML}
+  `;
+
+  // animate percent bar
+  setTimeout(()=>{ const pf=document.getElementById("percentFill"); if(pf) pf.style.width = percentage + "%"; }, 120);
+
+  // show download button and attach click handler
+  setTimeout(()=> {
+    const wrap = document.getElementById("downloadWrap");
+    if(wrap) wrap.style.display = "block";
+    const btn = document.getElementById("downloadPdfBtn");
+    if(btn){
+      btn.onclick = () => downloadPDF({
+        domain,
+        required,
+        skills,
+        missing,
+        percentage
+      });
+    }
+  }, 250);
+}
+
+/* ========== CLEAN PDF GENERATOR (Option A: Full Report) ========== */
+async function downloadPDF({domain, required, skills, missing, percentage}) {
+  const { jsPDF } = window.jspdf;
+
+  const pdf = new jsPDF({ unit: "pt", format: "a4" });
+  const margin = 40;
+  let y = 40;
+
+  pdf.setFont("Helvetica", "bold");
+  pdf.setFontSize(18);
+  pdf.text("Skill Gap Analysis Report", margin, y);
+  y += 28;
+
+  pdf.setFont("Helvetica", "normal");
+  pdf.setFontSize(12);
+
+  
+  const rawText = document.querySelector(`#domainInput option[value="${domain}"]`)?.textContent || domain;
+  const domainText = rawText.replace(/[\u{1F300}-\u{1FAFF}]/gu, "").trim();
+  pdf.text(`Domain: ${domainText}`, margin, y);
+  y += 18;
+
+  pdf.text(`Internship Chance: ${percentage}%`, margin, y);
+  y += 20;
+
+  pdf.setFont("Helvetica", "bold");
+  pdf.text("Required Skills:", margin, y);
+  pdf.setFont("Helvetica", "normal");
+  y += 16;
+  let reqText = required.join(", ");
+  let splitReq = pdf.splitTextToSize(reqText, 520);
+  pdf.text(splitReq, margin, y);
+  y += splitReq.length * 14 + 6;
+
+  pdf.setFont("Helvetica", "bold");
+  pdf.text("Your Skills:", margin, y);
+  pdf.setFont("Helvetica", "normal");
+  y += 16;
+  let yourText = skills.length ? skills.join(", ") : "None entered";
+  let splitYour = pdf.splitTextToSize(yourText, 520);
+  pdf.text(splitYour, margin, y);
+  y += splitYour.length * 14 + 8;
+
+  pdf.setFont("Helvetica", "bold");
+  pdf.text("Missing Skills:", margin, y);
+  pdf.setFont("Helvetica", "normal");
+  y += 16;
+  let missText = missing.length ? missing.join(", ") : "None";
+  let splitMiss = pdf.splitTextToSize(missText, 520);
+  pdf.text(splitMiss, margin, y);
+  y += splitMiss.length * 14 + 12;
+
+  pdf.setFont("Helvetica", "bold");
+  pdf.text("Personalized Roadmap:", margin, y);
+  y += 16;
+  pdf.setFont("Helvetica", "normal");
+
+  if(missing.length) {
+    missing.forEach((m, idx) => {
+      const key = m.toLowerCase();
+      const info = roadmapInfo[key] || {time:"Varies", diff:"Medium", proj:"Small Project"};
+      const stepTitle = `${idx+1}. ${m.toUpperCase()}`;
+      const stepDetails = `Time: ${info.time} — Difficulty: ${info.diff} — Project: ${info.proj}`;
+      let stepSplit = pdf.splitTextToSize(stepTitle, 520);
+      if(y + stepSplit.length * 14 > 750){ pdf.addPage(); y = 40; }
+      pdf.setFont("Helvetica", "bold");
+      pdf.text(stepSplit, margin, y);
+      y += stepSplit.length * 14 + 4;
+      pdf.setFont("Helvetica", "normal");
+      let detSplit = pdf.splitTextToSize(stepDetails, 520);
+      pdf.text(detSplit, margin + 10, y);
+      y += detSplit.length * 14 + 10;
+    });
+  } else {
+    let ok = "You are fully prepared — good luck! 🚀";
+    let okSplit = pdf.splitTextToSize(ok, 520);
+    if(y + okSplit.length * 14 > 750){ pdf.addPage(); y = 40; }
+    pdf.text(okSplit, margin, y);
+    y += okSplit.length * 14 + 8;
+  }
+
+  // Save
+  pdf.save("Skill_Gap_Report.pdf");
+}
+</script>
+</body>
+</html>
