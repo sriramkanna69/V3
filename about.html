@@ -77,6 +77,10 @@
       font-weight: 600;
       transition: all 0.3s ease;
       box-shadow: 0 0 15px rgba(241, 7, 163, 0.5);
+      
+      /* Fix to make clickable */
+      position: relative;
+      z-index: 2;
     }
 
     .back-btn:hover {
@@ -200,7 +204,10 @@
       </div>
     </div>
   </div>
-  <center><a href="dashboardai.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a></center>
+
+  <div style="text-align: center;">
+    <a href="dashboardai.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+  </div>
 
   <footer>
     © 2025 Internship Finder | Built with 💙 under the <a href="#">CodeSapiens Mentorship Program</a>
@@ -345,4 +352,6 @@
   </script>
 </body>
 </html>
+
+
 
